@@ -1,0 +1,9 @@
+.App {
+  display: flex;
+  justify-content: center;
+
+}
+
+.dropdown-wrapper {
+  padding: 20px;
+}
