@@ -68,11 +68,4 @@ function App() {
 
 }
 
-const options = [
-  { currency: 'UA', value: 4 },
-  { currency: 'US', value: 2 },
-  { currency: 'DE', value: 3 }
-]
-
-
 export default App;
