@@ -3,26 +3,25 @@ import Dropdown from "./dropdown/dropdown.component";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-const currURL = "https://jsonplaceholder.typicode.com/";
-const listCurrURL = "https://jsonplaceholder.typicode.com/posts/1";
+const currURL = "http://localhost:8080/currencies";
 
 function App() {
 
   const [currencies, setCurrencies] = useState([]);
 
   useEffect(() => {
-    axios.get(listCurrURL).then((response) => {
-      setCurrencies(response.currencyList);
+    axios.get(currURL).then((response) => {
+      setCurrencies(response.data.currencyList);
     });
   }, []);
 
-  const [curr1, setCurr1] = useState({ currency: 'UA', value: 4 });
-  const [curr2, setCurr2] = useState({ currency: 'UA', value: 4 });
+  const [curr1, setCurr1] = useState({ currency: '', value: 0 });
+  const [curr2, setCurr2] = useState({ currency: '', value: 0 });
 
   const [inputValues, setInputValues] = useState({ value1: "", value2: ""});
 
   const convert = (value, curr1, curr2) => {
-    return parseFloat(value) / parseFloat(curr1) * parseFloat(curr2);
+    return (parseFloat(value) / parseFloat(curr1) * parseFloat(curr2)).toFixed(2);
   }
 
   return (
@@ -30,8 +29,8 @@ function App() {
       <div className="dropdown-wrapper">
       <Dropdown
         onChange={(selected) => {
-          axios.get(currURL + `${selected.currency}`).then((response) => {
-            setCurr1({ currency: response.currency, value: response.value }); // curr
+          axios.get(currURL + `/${selected.currency}`).then((response) => {
+            setCurr1({ currency: response.data.currency, value: response.data.value }); // curr
             setInputValues({
               ...inputValues,
               value2: convert(inputValues.value1, selected.value, curr2.value)
@@ -48,8 +47,8 @@ function App() {
       <div className="dropdown-wrapper">
       <Dropdown
         onChange={(selected) => {
-          axios.get(currURL + `${selected.currency}`).then((response) => {
-            setCurr2({ currency: response.currency, value: response.value });
+          axios.get(currURL + `/${selected.currency}`).then((response) => {
+            setCurr2({ currency: response.data.currency, value: response.data.value });
             setInputValues({
               ...inputValues,
               value1: convert(inputValues.value2, curr2.value, curr1.value)
